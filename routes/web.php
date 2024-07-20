@@ -14,4 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::resource('/', ToDoController::class);
+Route::redirect('/', '/todos');
+
+Route::resource('/todos', ToDoController::class);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateToDoRecordRequest;
 use App\Models\ToDo;
 use Illuminate\Http\Request;
 
@@ -10,26 +11,25 @@ class ToDoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $todo = Todo::all();
-        return view('index')->with('todos', $todo);
-    }
+        $query = Todo::query();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('todos.create');
+        if ($request->has('show_all') && $request->show_all == 'true') {
+            $todos = $query->get();
+            return response()->json($todos);
+        } else {
+            $todos = $query->where('completed', false)->get();
+            return view('index', compact('todos'));
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateToDoRecordRequest $request)
     {
-        //
+        return ToDo::create($request->all());
     }
 
     /**
@@ -53,7 +53,13 @@ class ToDoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        if ($id) {
+            $toDoRecord = Todo::find($id);
+            $toDoRecord->completed = true;
+            $toDoRecord->save();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -61,6 +67,13 @@ class ToDoController extends Controller
      */
     public function destroy(string $id)
     {
-        // 
+        if ($id) {
+            $toDoRecord = ToDo::find($id);
+            if ($toDoRecord) {
+                $toDoRecord->delete();
+                return true;
+            }
+        }
+        return false;
     }
 }

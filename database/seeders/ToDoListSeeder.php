@@ -14,7 +14,9 @@ class ToDoListSeeder extends Seeder {
 
     public function run() {
         $data = [];
+
         $faker = \Faker\Factory::create(); 
+
         for($x = 0; $x < 5; $x++) {
             $data[] = [
                 'name' => $faker->name,
