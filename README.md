@@ -10,7 +10,7 @@
 - Install project dependencies: `composer install`
 - Create a new .env file: `cp .env.example .env`
 - Add your own database credentials in the .env file in `DB_DATABASE, DB_USERNAME, DB_PASSWORD`
-- Create users table: `php artisan migrate --seed`
+- Run the command: `php artisan migrate --seed`
 
 ### Screenshot(s)
 
